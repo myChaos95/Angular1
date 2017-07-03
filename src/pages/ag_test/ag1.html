@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+</head>
+<body ng-app='app' ng-controller='ctrl'>
+    <input type="text" ng-model='query'>
+    <ul>
+        <li ng-repeat='name in names'> {{ name | reverse }}</li>
+    </ul>
+</body>
+    <script src="http://cdn.static.runoob.com/libs/angular.js/1.4.6/angular.min.js"></script>
+    <script>
+        var app = angular.module('app',[]);
+        app.controller('ctrl', ($scope) => {
+                $scope.names = ['yes','no','hello'];
+                $scope.query = '';
+            });
+        app.service('mySer',function(){
+            this.add = function(text){
+                console.log(text);
+            }
+        })
+        app.filter('reverse', ['mySer', function(mySer) { //可以注入依赖
+            return function(text) {
+                mySer.add();
+                return text.split("").reverse().join("");
+            }
+        }]); 
+    </script>
+</html>
